@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Time | iOS 26 Glass Design</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #000428, #004e92, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: galaxyBackground 30s ease infinite;
+            color: white;
+            min-height: 100vh;
+            overflow: hidden;
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            touch-action: none;
+        }
+
+        @keyframes galaxyBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Enhanced iOS Glass Effect */
+        .clock-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 40px;
+            padding: 4rem;
+            box-shadow: 
+                0 35px 80px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 0 30px rgba(255, 255, 255, 0.15);
+            margin-bottom: 2rem;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Magnifying Glass Effect */
+        .clock-container::before {
+            content: '';
+            position: absolute;
+            top: -150%;
+            left: -150%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            opacity: 0.5;
+            animation: rotateGlass 60s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes rotateGlass {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .clock {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            font-weight: 800;
+            position: relative;
+            letter-spacing: 5px;
+            transition: all 0.3s ease;
+        }
+
+        /* Enhanced Time Segment */
+        .time-segment {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 2.5rem;
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 3s infinite;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1), 0 0 0 rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.15), 0 0 20px rgba(255, 255, 255, 0.1); }
+            100% { box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1), 0 0 0 rgba(255, 255, 255, 0.1); }
+        }
+
+        .time-segment:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .time-segment::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));
+            z-index: -1;
+        }
+
+        .time-divider {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 7rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .am-pm {
+            font-size: 2.5rem;
+            align-self: flex-end;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.8rem 1.8rem;
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: pulse 3s infinite;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .am-pm:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Settings Icon */
+        .settings-btn {
+            position: absolute;
+            top: 2.5rem;
+            right: 2.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.4),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 20;
+        }
+
+        .settings-btn:hover {
+            transform: translateY(-5px) rotate(30deg);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 0 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .settings-btn i {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Settings Panel - Modern Slide-in */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 380px;
+            max-width: 90%;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(50px) saturate(200%);
+            -webkit-backdrop-filter: blur(50px) saturate(200%);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -15px 0 50px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            padding: 2.5rem;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .settings-panel.active {
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .close-panel {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 0.5),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .close-panel:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+            box-shadow: 
+                inset 0 0 15px rgba(0, 0, 0, 0.6),
+                0 7px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Updated Controls */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .control-group label {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .control-group label i {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .size-control {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            width: 100%;
+        }
+
+        .size-control button {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 0.5),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .size-control button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 
+                inset 0 0 15px rgba(0, 0, 0, 0.6),
+                0 7px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .slider-container {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            height: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 0.5),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            outline: none;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+
+        .slider-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #00dbde, #fc00ff);
+            border-radius: 10px;
+            pointer-events: none;
+            transition: width 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        /* FIXED: Timezone Dropdown - iOS 26 Glass Style */
+        .timezone-selector {
+            position: relative;
+            width: 100%;
+        }
+
+        .timezone-selector select {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            color: white;
+            border: none;
+            padding: 1.2rem 1.8rem;
+            font-size: 1.2rem;
+            border-radius: 20px;
+            width: 100%;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            background-size: 1.5rem;
+            box-shadow: 
+                inset 0 0 15px rgba(255, 255, 255, 0.2),
+                0 8px 20px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Glass Dropdown Options */
+        select option {
+            background: rgba(30, 30, 50, 0.95);
+            color: #fff;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        select option:checked {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        select option:hover {
+            background: rgba(124, 58, 237, 0.5);
+        }
+
+        .timezone-selector select:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                inset 0 0 20px rgba(255, 255, 255, 0.25),
+                0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .flip-animation {
+            animation: flip 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+        }
+
+        @keyframes flip {
+            0% { transform: rotateX(0deg); }
+            50% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0deg); }
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            animation: float 25s infinite linear;
+            transition: all 2s ease;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, 200px) rotate(90deg); }
+            50% { transform: translate(200px, 0) rotate(180deg); }
+            75% { transform: translate(100px, -200px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        footer {
+            position: fixed;
+            bottom: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            z-index: 1;
+            transition: all 0.8s ease;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 0.5),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 
+                inset 0 0 15px rgba(0, 0, 0, 0.6),
+                0 7px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Size classes for clock */
+        .clock-size-small .clock { font-size: 5rem; }
+        .clock-size-medium .clock { font-size: 7rem; }
+        .clock-size-large .clock { font-size: 9rem; }
+        .clock-size-huge .clock { font-size: 11rem; }
+
+        .clock-size-small .time-segment { padding: 1rem 1.8rem; }
+        .clock-size-medium .time-segment { padding: 1.5rem 2.5rem; }
+        .clock-size-large .time-segment { padding: 2rem 3rem; }
+        .clock-size-huge .time-segment { padding: 2.5rem 3.5rem; }
+
+        .clock-size-small .time-divider { font-size: 5rem; }
+        .clock-size-medium .time-divider { font-size: 7rem; }
+        .clock-size-large .time-divider { font-size: 9rem; }
+        .clock-size-huge .time-divider { font-size: 11rem; }
+
+        .clock-size-small .am-pm { font-size: 1.8rem; padding: 0.6rem 1.5rem; }
+        .clock-size-medium .am-pm { font-size: 2.5rem; padding: 0.8rem 1.8rem; }
+        .clock-size-large .am-pm { font-size: 3rem; padding: 1rem 2rem; }
+        .clock-size-huge .am-pm { font-size: 3.5rem; padding: 1.2rem 2.2rem; }
+
+        /* Inspirational Quotes with Typewriter Effect */
+        .quote-container {
+            position: absolute;
+            top: 1.5rem;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+            text-align: center;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .quote-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quote-text {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 
+                         0 0 20px rgba(255, 255, 255, 0.5),
+                         0 0 30px rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+        }
+
+        .quote-author {
+            margin-top: 0.5rem;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: .7rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease 0.2s;
+        }
+
+        .quote-author.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 2.2rem;
+            background: rgba(255, 255, 255, 0.8);
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .clock-container {
+                padding: 2rem;
+                width: 95%;
+            }
+            
+            .settings-btn {
+                top: 1.5rem;
+                right: 1.5rem;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .settings-panel {
+                width: 320px;
+                padding: 2rem 1.5rem;
+            }
+            
+            .clock-size-small .clock { font-size: 3.5rem; }
+            .clock-size-medium .clock { font-size: 4.5rem; }
+            .clock-size-large .clock { font-size: 5.5rem; }
+            .clock-size-huge .clock { font-size: 6.5rem; }
+            
+            .clock-size-small .time-divider { font-size: 3.5rem; }
+            .clock-size-medium .time-divider { font-size: 4.5rem; }
+            .clock-size-large .time-divider { font-size: 5.5rem; }
+            .clock-size-huge .time-divider { font-size: 6.5rem; }
+            
+            .clock {
+                gap: 0.8rem;
+            }
+            
+            .quote-text {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .clock-container {
+                padding: 1.5rem;
+                border-radius: 30px;
+            }
+            
+            .clock {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .am-pm {
+                align-self: center;
+                margin-top: 1rem;
+            }
+            
+            .settings-btn {
+                top: 1.2rem;
+                right: 1.2rem;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .settings-btn i {
+                font-size: 1.5rem;
+            }
+            
+            .settings-panel {
+                width: 280px;
+                padding: 1.8rem 1.2rem;
+            }
+            
+            .panel-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .clock-size-small .clock { font-size: 2.5rem; }
+            .clock-size-medium .clock { font-size: 3rem; }
+            .clock-size-large .clock { font-size: 3.5rem; }
+            .clock-size-huge .clock { font-size: 4rem; }
+            
+            .clock-size-small .time-divider { font-size: 2.5rem; }
+            .clock-size-medium .time-divider { font-size: 3rem; }
+            .clock-size-large .time-divider { font-size: 3.5rem; }
+            .clock-size-huge .time-divider { font-size: 4rem; }
+            
+            .quote-text {
+                font-size: 1.3rem;
+                padding: 1rem;
+            }
+            
+            .quote-author {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="floating-elements" id="floating-elements"></div>
+    
+    <button class="fullscreen-btn" id="fullscreen-btn">
+        <i class="fas fa-expand"></i>
+    </button>
+    
+    <div class="container clock-size-medium" id="main-container">
+        <!-- Quote Container -->
+        <div class="quote-container" id="quote-container">
+            <div>
+                <div class="quote-text" id="quote-text"></div>
+                <div class="quote-author" id="quote-author"></div>
+            </div>
+        </div>
+        
+        <div class="clock-container">
+            <button class="settings-btn" id="settings-btn">
+                <i class="fas fa-cog"></i>
+            </button>
+            
+            <div class="clock">
+                <div class="time-segment" id="hours-tens">0</div>
+                <div class="time-segment" id="hours-ones">0</div>
+                <div class="time-divider">:</div>
+                <div class="time-segment" id="minutes-tens">0</div>
+                <div class="time-segment" id="minutes-ones">0</div>
+                <div class="am-pm" id="am-pm">AM</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settings-panel">
+        <div class="panel-header">
+            <h2>Settings</h2>
+            <button class="close-panel" id="close-panel">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group timezone-selector">
+                <label for="timezone"><i class="fas fa-globe-americas"></i> Select Timezone</label>
+                <select id="timezone">
+                    <option value="Europe/London" selected>UK (Europe/London)</option>
+                    <option value="America/New_York">America/New York (EST)</option>
+                    <option value="America/Los_Angeles">America/Los Angeles (PST)</option>
+                    <option value="Europe/Paris">Europe/Paris (CET)</option>
+                    <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                    <option value="Australia/Sydney">Australia/Sydney (AEST)</option>
+                    <option value="Asia/Dubai">Asia/Dubai (GST)</option>
+                    <option value="Asia/Shanghai">Asia/Shanghai (CST)</option>
+                    <option value="Asia/Singapore">Asia/Singapore (SGT)</option>
+                    <option value="Pacific/Auckland">Pacific/Auckland (NZST)</option>
+                    <option value="America/Chicago">America/Chicago (CST)</option>
+                    <option value="America/Toronto">America/Toronto (EST)</option>
+                    <option value="Europe/Berlin">Europe/Berlin (CET)</option>
+                    <option value="Europe/Moscow">Europe/Moscow (MSK)</option>
+                    <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="clock-size"><i class="fas fa-expand-alt"></i> Clock Size</label>
+                <div class="size-control">
+                    <button id="size-down"><i class="fas fa-minus"></i></button>
+                    <div class="slider-container">
+                        <div class="slider-track" id="slider-track"></div>
+                        <input type="range" min="1" max="4" value="2" class="slider" id="clock-size">
+                    </div>
+                    <button id="size-up"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; <span id="current-year"></span> Elileo. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Create stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 300; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.width = `${Math.random() * 4 + 1}px`;
+            star.style.height = star.style.width;
+            star.style.setProperty('--duration', `${Math.random() * 5 + 2}s`);
+            star.style.animationDelay = `${Math.random() * 5}s`;
+            starsContainer.appendChild(star);
+        }
+        
+        // Create floating elements
+        const floatingContainer = document.getElementById('floating-elements');
+        const colors = ['#ff00aa', '#00ffff', '#7700ff', '#ff7e5f', '#7eff8e'];
+        for (let i = 0; i < 8; i++) {
+            const element = document.createElement('div');
+            element.classList.add('floating-element');
+            const size = Math.random() * 300 + 100;
+            element.style.width = `${size}px`;
+            element.style.height = `${size}px`;
+            element.style.background = colors[Math.floor(Math.random() * colors.length)];
+            element.style.top = `${Math.random() * 100}%`;
+            element.style.left = `${Math.random() * 100}%`;
+            element.style.animationDuration = `${Math.random() * 30 + 20}s`;
+            element.style.animationDelay = `${Math.random() * 10}s`;
+            floatingContainer.appendChild(element);
+        }
+        
+        // Set current year in copyright
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Clock elements
+        const hoursTens = document.getElementById('hours-tens');
+        const hoursOnes = document.getElementById('hours-ones');
+        const minutesTens = document.getElementById('minutes-tens');
+        const minutesOnes = document.getElementById('minutes-ones');
+        const amPm = document.getElementById('am-pm');
+        const timezoneSelect = document.getElementById('timezone');
+        const clockSizeSlider = document.getElementById('clock-size');
+        const sliderTrack = document.getElementById('slider-track');
+        const sizeDownBtn = document.getElementById('size-down');
+        const sizeUpBtn = document.getElementById('size-up');
+        const mainContainer = document.getElementById('main-container');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const timeSegments = document.querySelectorAll('.time-segment');
+        const amPmElement = document.getElementById('am-pm');
+        
+        // Quote elements
+        const quoteContainer = document.getElementById('quote-container');
+        const quoteText = document.getElementById('quote-text');
+        const quoteAuthor = document.getElementById('quote-author');
+        
+        // Settings Panel Functionality
+        const settingsBtn = document.getElementById('settings-btn');
+        const closePanelBtn = document.getElementById('close-panel');
+        const settingsPanel = document.getElementById('settings-panel');
+        
+        settingsBtn.addEventListener('click', () => {
+            settingsPanel.classList.add('active');
+        });
+        
+        closePanelBtn.addEventListener('click', () => {
+            settingsPanel.classList.remove('active');
+        });
+        
+        // Close panel when clicking outside
+        document.addEventListener('click', (e) => {
+            if (settingsPanel.classList.contains('active')) {
+                if (!settingsPanel.contains(e.target) && !settingsBtn.contains(e.target)) {
+                    settingsPanel.classList.remove('active');
+                }
+            }
+        });
+        
+        // Close panel with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && settingsPanel.classList.contains('active')) {
+                settingsPanel.classList.remove('active');
+            }
+        });
+        
+        // Fullscreen functionality
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                }
+            }
+        }
+        
+        // Update slider track width
+        function updateSliderTrack() {
+            const value = clockSizeSlider.value;
+            const min = clockSizeSlider.min;
+            const max = clockSizeSlider.max;
+            const percent = ((value - min) / (max - min)) * 100;
+            sliderTrack.style.width = `${percent}%`;
+        }
+        
+        // Previous values for animation
+        let prevHoursTens = '0';
+        let prevHoursOnes = '0';
+        let prevMinutesTens = '0';
+        let prevMinutesOnes = '0';
+        let prevAmPm = 'AM';
+        
+        // Format time to HH:MM AM/PM
+        function formatTime(date) {
+            let hours = date.getHours();
+            const minutes = date.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convert 0 to 12
+            
+            return {
+                hours: hours.toString().padStart(2, '0'),
+                minutes: minutes.toString().padStart(2, '0'),
+                ampm: ampm
+            };
+        }
+        
+        // Update the clock display
+        function updateClock() {
+            const timezone = timezoneSelect.value;
+            const now = new Date();
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: timezone,
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+            });
+            
+            const parts = formatter.formatToParts(now);
+            let hour, minute, ampm;
+            
+            parts.forEach(part => {
+                if (part.type === 'hour') hour = part.value.padStart(2, '0');
+                if (part.type === 'minute') minute = part.value.padStart(2, '0');
+                if (part.type === 'dayPeriod') ampm = part.value.toUpperCase();
+            });
+            
+            // Update hours
+            if (hour[0] !== prevHoursTens) {
+                hoursTens.textContent = hour[0];
+                hoursTens.classList.add('flip-animation');
+                setTimeout(() => hoursTens.classList.remove('flip-animation'), 500);
+                prevHoursTens = hour[0];
+            }
+            
+            if (hour[1] !== prevHoursOnes) {
+                hoursOnes.textContent = hour[1];
+                hoursOnes.classList.add('flip-animation');
+                setTimeout(() => hoursOnes.classList.remove('flip-animation'), 500);
+                prevHoursOnes = hour[1];
+            }
+            
+            // Update minutes
+            if (minute[0] !== prevMinutesTens) {
+                minutesTens.textContent = minute[0];
+                minutesTens.classList.add('flip-animation');
+                setTimeout(() => minutesTens.classList.remove('flip-animation'), 500);
+                prevMinutesTens = minute[0];
+            }
+            
+            if (minute[1] !== prevMinutesOnes) {
+                minutesOnes.textContent = minute[1];
+                minutesOnes.classList.add('flip-animation');
+                setTimeout(() => minutesOnes.classList.remove('flip-animation'), 500);
+                prevMinutesOnes = minute[1];
+            }
+            
+            // Update AM/PM
+            if (ampm !== prevAmPm) {
+                amPm.textContent = ampm;
+                amPm.classList.add('flip-animation');
+                setTimeout(() => amPm.classList.remove('flip-animation'), 500);
+                prevAmPm = ampm;
+            }
+        }
+        
+        // Set clock size based on slider
+        function setClockSize(size) {
+            const sizes = ['small', 'medium', 'large', 'huge'];
+            mainContainer.className = 'container clock-size-' + sizes[size - 1];
+        }
+        
+        // Initialize clock
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        // Update clock when timezone changes
+        timezoneSelect.addEventListener('change', updateClock);
+        
+        // Set initial clock size
+        setClockSize(clockSizeSlider.value);
+        updateSliderTrack();
+        
+        // Handle slider change
+        clockSizeSlider.addEventListener('input', () => {
+            setClockSize(clockSizeSlider.value);
+            updateSliderTrack();
+        });
+        
+        // Handle size buttons
+        sizeDownBtn.addEventListener('click', () => {
+            if (clockSizeSlider.value > 1) {
+                clockSizeSlider.value--;
+                setClockSize(clockSizeSlider.value);
+                updateSliderTrack();
+            }
+        });
+        
+        sizeUpBtn.addEventListener('click', () => {
+            if (clockSizeSlider.value < 4) {
+                clockSizeSlider.value++;
+                setClockSize(clockSizeSlider.value);
+                updateSliderTrack();
+            }
+        });
+        
+        // Create interactive particles
+        document.addEventListener('mousemove', (e) => {
+            // Create particles
+            if (Math.random() > 0.7) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 20 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${e.clientX}px`;
+                particle.style.top = `${e.clientY}px`;
+                particle.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.4)`;
+                particle.style.boxShadow = `0 0 ${size}px rgba(255, 255, 255, 0.5)`;
+                
+                document.body.appendChild(particle);
+                
+                // Animate and remove particle
+                setTimeout(() => {
+                    particle.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(0)`;
+                    particle.style.opacity = '0';
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1000);
+                }, 50);
+            }
+            
+            // Move floating elements with mouse
+            const elements = document.querySelectorAll('.floating-element');
+            elements.forEach(el => {
+                const x = (e.clientX - window.innerWidth / 2) / 50;
+                const y = (e.clientY - window.innerHeight / 2) / 50;
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+        
+        // Time-related quotes
+        const quotes = [
+            { text: "Time is the most valuable thing a man can spend.", author: "Theophrastus" },
+            { text: "The two most powerful warriors are patience and time.", author: "Leo Tolstoy" },
+            { text: "Time flies over us, but leaves its shadow behind.", author: "Nathaniel Hawthorne" },
+            { text: "Time is what we want most, but what we use worst.", author: "William Penn" },
+            { text: "Time is the wisest counselor of all.", author: "Pericles" },
+            { text: "Lost time is never found again.", author: "Benjamin Franklin" },
+            { text: "Time is the coin of your life. Spend it wisely.", author: "Carl Sandburg" },
+            { text: "The present time has one advantage over every other - it is our own.", author: "Charles Caleb Colton" },
+            { text: "Time is a created thing. To say 'I don't have time' is like saying, 'I don't want to.'", author: "Lao Tzu" },
+            { text: "Time you enjoy wasting is not wasted time.", author: "Marthe Troly-Curtin" },
+            { text: "Time is the longest distance between two places.", author: "Tennessee Williams" },
+            { text: "Time is a brisk wind, for each hour it brings something new.", author: "Paracelsus" },
+            { text: "Time is the school in which we learn, time is the fire in which we burn.", author: "Delmore Schwartz" },
+            { text: "The future is something which everyone reaches at the rate of sixty minutes an hour.", author: "C.S. Lewis" },
+            { text: "Time is the most undefinable yet paradoxical of things; the past is gone, the future is not come, and the present becomes the past even while we attempt to define it.", author: "Charles Caleb Colton" },
+            { text: "Time is the moving image of eternity.", author: "Plato" },
+            { text: "Time is a great healer, but a poor beautician.", author: "Lucille S. Harper" },
+            { text: "Time is the soul of this world.", author: "Pythagoras" },
+            { text: "Time is the best teacher, but unfortunately, it kills all its pupils.", author: "Hector Berlioz" },
+            { text: "Time is a river, and books are boats.", author: "Dan Brown" }
+        ];
+        
+        // Function to show a random quote with typewriter effect
+        function showRandomQuote() {
+            // Only show quote 30% of the time
+            if (Math.random() > 0.3) return;
+            
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const quote = quotes[randomIndex];
+            
+            // Reset elements
+            quoteText.innerHTML = '';
+            quoteAuthor.textContent = '';
+            quoteAuthor.classList.remove('visible');
+            
+            // Show the quote container
+            quoteContainer.classList.add('visible');
+            
+            // Typewriter effect
+            let i = 0;
+            const speed = 40; // typing speed in ms
+            const text = `"${quote.text}"`;
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    quoteText.innerHTML = text.substring(0, i) + '<span class="cursor"></span>';
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    quoteText.innerHTML = text;
+                    // Show author
+                    quoteAuthor.textContent = `- ${quote.author}`;
+                    setTimeout(() => {
+                        quoteAuthor.classList.add('visible');
+                    }, 300);
+                    
+                    // Calculate display time based on quote length (50ms per character)
+                    const displayTime = Math.max(4000, Math.min(10000, quote.text.length * 60));
+                    
+                    // Hide the quote after calculated time
+                    setTimeout(() => {
+                        quoteContainer.classList.remove('visible');
+                        setTimeout(() => {
+                            quoteAuthor.classList.remove('visible');
+                        }, 500);
+                    }, displayTime);
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Add rubber band effect to each digit card
+        function setupRubberBandEffect(element) {
+            let isDragging = false;
+            let startX, startY;
+            let translateX = 0, translateY = 0;
+            let startTranslateX = 0, startTranslateY = 0;
+            
+            element.addEventListener('mousedown', startDrag);
+            element.addEventListener('touchstart', startDrag, { passive: false });
+            
+            function startDrag(e) {
+                e.preventDefault();
+                isDragging = true;
+                
+                // Get starting position
+                if (e.type === 'mousedown') {
+                    startX = e.clientX;
+                    startY = e.clientY;
+                } else if (e.type === 'touchstart') {
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                }
+                
+                startTranslateX = translateX;
+                startTranslateY = translateY;
+                
+                // Add event listeners for move and end
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('touchmove', drag, { passive: false });
+                document.addEventListener('mouseup', endDrag);
+                document.addEventListener('touchend', endDrag);
+                document.addEventListener('touchcancel', endDrag);
+            }
+            
+            function drag(e) {
+                if (!isDragging) return;
+                
+                let currentX, currentY;
+                
+                if (e.type === 'mousemove') {
+                    currentX = e.clientX;
+                    currentY = e.clientY;
+                } else if (e.type === 'touchmove') {
+                    currentX = e.touches[0].clientX;
+                    currentY = e.touches[0].clientY;
+                }
+                
+                // Calculate new position
+                translateX = startTranslateX + (currentX - startX);
+                translateY = startTranslateY + (currentY - startY);
+                
+                // Apply transform
+                element.style.transform = `translate(${translateX}px, ${translateY}px)`;
+            }
+            
+            function endDrag() {
+                isDragging = false;
+                
+                // Remove event listeners
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('touchmove', drag);
+                document.removeEventListener('mouseup', endDrag);
+                document.removeEventListener('touchend', endDrag);
+                document.removeEventListener('touchcancel', endDrag);
+                
+                // Rubber band effect back to original position
+                animateBackToCenter();
+                
+                // Show random quote
+                showRandomQuote();
+            }
+            
+            function animateBackToCenter() {
+                const startTime = performance.now();
+                const duration = 800; // Animation duration in ms
+                
+                function animate(time) {
+                    const elapsed = time - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Ease-out function for smooth animation
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    
+                    // Calculate new position
+                    const newX = translateX * (1 - ease);
+                    const newY = translateY * (1 - ease);
+                    
+                    // Apply transform
+                    element.style.transform = `translate(${newX}px, ${newY}px)`;
+                    
+                    // Continue animation if not finished
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        // Reset position values
+                        translateX = 0;
+                        translateY = 0;
+                        element.style.transform = 'translate(0px, 0px)';
+                    }
+                }
+                
+                requestAnimationFrame(animate);
+            }
+        }
+        
+        // Apply rubber band effect to all time segments and AM/PM
+        timeSegments.forEach(segment => setupRubberBandEffect(segment));
+        setupRubberBandEffect(amPmElement);
+        
+        // Update slider track on load
+        window.addEventListener('load', updateSliderTrack);
+        
+        // Show an initial quote
+        setTimeout(showRandomQuote, 2000);
+    </script>
+</body>
+</html>
