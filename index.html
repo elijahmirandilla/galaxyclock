@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy Time</title>
+    <title>Galaxy Time | iOS 26 Glass Design</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -1047,51 +1047,57 @@
 
     <script>
         // ===== INTRO STORY FUNCTIONALITY =====
-        function showIntroStory() {
-            const story = "When I was seven, I’d sit beneath the night sky, tracing constellations while my grandmother’s brass clock ticked beside me. Its hands moved like distant planets in orbit, each turn reminding me that time, like a galaxy, is vast yet measured in precious moments. I learned then that every second carries the weight of a story—her soft laughter, the scent of her cooking, the promise of one more shared sunset.\n\nNow I stare at a galaxy-inspired clock on my desk, its swirling stars and glowing face echoing the universe’s quiet pulse. As its hands sweep across nebulae of deep blue and violet, I feel each moment slip through my fingers—and with it, the chance to live fully, before time drifts away.";
-            
-            const storyContainer = document.getElementById('intro-story-container');
-            const storyElement = document.getElementById('intro-story');
-            
-            // Make story container visible
-            storyContainer.classList.add('visible');
-            storyElement.classList.add('visible');
-            
-            // Typewriter effect for the story
-            let i = 0;
-            const speed = 30; // typing speed in ms
-            
-            function typeWriter() {
-                if (i < story.length) {
-                    storyElement.textContent = story.substring(0, i) + (i < story.length ? '█' : '');
-                    i++;
-                    setTimeout(typeWriter, speed);
-                } else {
-                    // Show the full story without cursor
-                    storyElement.textContent = story;
-                    
-                    // Calculate reading time (approx 50ms per character)
-                    const readingTime = Math.max(10000, Math.min(20000, story.length * 50));
-                    
-                    // After reading time, swallow the story
-                    setTimeout(swallowStory, readingTime);
-                }
+function showIntroStory() {
+    const story = "I used to think I had time. Time to call him back. Time to fix what I said to her that night. Time to visit. Time to try again. But time doesn’t wait for when you’re finally ready. It just keeps going. And one day, without warning, it leaves you standing in an empty room full of things you meant to do. You stare at your hands like they should still be holding something—but they’re not. They’re just late.\n\nNow I watch the clock more than I’d like to admit. Not because I’m busy, but because it reminds me of everything I didn’t choose while I had the chance. A coffee I never made. An apology I saved for next week. A life I thought would wait. It’s strange—how quiet a clock sounds when you realize it’s not just marking time. It’s marking loss.";
+    
+    const storyContainer = document.getElementById('intro-story-container');
+    const storyElement = document.getElementById('intro-story');
+    
+    // Make story container visible
+    storyContainer.classList.add('visible');
+    storyElement.classList.add('visible');
+    
+    // Typewriter effect for the story - slower pacing
+    let i = 0;
+    const speed = 80; // Slower typing speed (increased from 30ms to 50ms)
+    const pauseAtLineBreaks = 1000; // Longer pause at paragraph breaks
+    
+    function typeWriter() {
+        if (i < story.length) {
+            // Handle pauses at line breaks
+            if (story[i] === '\n') {
+                storyElement.textContent = story.substring(0, i) + (i < story.length ? '█' : '');
+                i++;
+                setTimeout(typeWriter, pauseAtLineBreaks);
+                return;
             }
             
-            function swallowStory() {
-                // Add swallow animation
-                storyElement.classList.add('story-swallowed');
-                
-                // After animation completes, hide story container and show UI
-                setTimeout(() => {
-                    storyContainer.style.display = 'none';
-                    revealUI();
-                }, 1500);
-            }
+            storyElement.textContent = story.substring(0, i) + (i < story.length ? '█' : '');
+            i++;
+            setTimeout(typeWriter, speed);
+        } else {
+            // Show the full story without cursor
+            storyElement.textContent = story;
             
-            // Start typing
-            setTimeout(typeWriter, 500);
+            // Wait 3 seconds before swallowing the story
+            setTimeout(swallowStory, 3000);
         }
+    }
+    
+    function swallowStory() {
+        // Add swallow animation
+        storyElement.classList.add('story-swallowed');
+        
+        // After animation completes, hide story container and show UI
+        setTimeout(() => {
+            storyContainer.style.display = 'none';
+            revealUI();
+        }, 1500);
+    }
+    
+    // Start typing
+    setTimeout(typeWriter, 500);
+}
         
         function revealUI() {
             // Create black hole for spit out effect
